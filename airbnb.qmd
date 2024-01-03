@@ -1,0 +1,78 @@
+ # Install and load necessary packages
+# Install and load necessary packages
+install.packages("sf")
+library(sf)
+
+---
+title: "ENVS363/563.3 Computational Essay"
+output:
+  quarto::quarto_html:
+    toc: true
+---
+
+# Part 1 – Common
+
+## 1.1 Collecting and Importing the Data
+
+### 1.1.1 Import and Explore Airbnb Data
+
+```{r}
+
+# Load Airbnb data for San Francisco
+sf_airbnb <- read.csv("sf.csv")
+
+# Load Airbnb data for San Mateo
+sm_airbnb <- read.csv("sm.csv")
+
+# Load Airbnb data for Oakland
+oak_airbnb <- read.csv("oak.csv")
+# Display a summary of the datasets
+summary(sf_airbnb)
+summary(sm_airbnb)
+summary(oak_airbnb)
+
+```
+```{r}
+# Replace 'path/to/sf_1.0-15.zip' with the actual path where you saved the ZIP file
+install.packages("sf_1.0-15.zip", repos = NULL, type = "win.binary")
+library(sf)
+
+# Load GeoJSON data for San Francisco neighborhoods
+sf_neighborhoods <- st_read("sf.geojson")
+
+# Load GeoJSON data for San Mateo neighborhoods
+sm_neighborhoods <- st_read("sm.geojson")
+
+# Load GeoJSON data for Oakland neighborhoods
+oak_neighborhoods <- st_read("oak.geojson")
+```
+```{r}
+# Install and load necessary packages for data manipulation and visualization
+install.packages(c("dplyr", "ggplot2"))
+library(dplyr)
+library(ggplot2)
+
+# Combine neighborhood and Airbnb data for each location
+sf_combined <- left_join(sf_neighborhoods, sf_airbnb, by = c("neighbourhood" = "neighbourhood"))
+sm_combined <- left_join(sm_neighborhoods, sm_airbnb, by = c("neighbourhood" = "neighbourhood"))
+oak_combined <- left_join(oak_neighborhoods, oak_airbnb, by = c("neighbourhood" = "neighbourhood"))
+
+# Visualize the average Airbnb prices by neighborhood
+ggplot(sf_combined, aes(fill = price, color = price)) +
+  geom_sf() +
+  scale_fill_gradient(low = "lightblue", high = "darkblue") +
+  scale_color_gradient(low = "lightblue", high = "darkblue") +
+  labs(title = "Average Airbnb Prices in San Francisco Neighborhoods")
+  ```
+  ````{r}
+  ggplot(sm_combined, aes(fill = price, color = price)) +
+  geom_sf() +
+  scale_fill_gradient(low = "lightgreen", high = "red") +
+  scale_color_gradient(low = "lightgreen", high = "red") +
+  labs(title = "Average Airbnb Prices in San Mateo Neighborhoods")
+  ggplot(oak_combined, aes(fill = price, color = price)) +
+  geom_sf() +
+  scale_fill_gradient(low = "lightcoral", high = "darkred") +
+  scale_color_gradient(low = "lightcoral", high = "darkred") +
+  labs(title = "Average Airbnb Prices in Oakland Neighborhoods")
+    
